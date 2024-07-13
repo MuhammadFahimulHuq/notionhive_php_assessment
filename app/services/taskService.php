@@ -3,13 +3,21 @@
 namespace App\Services;
 
 use App\Config\Database;
+use App\Traits\HasExecution;
+
 
 
 class TaskService
 {
 
 
-    use Database;
+    use HasExecution;
+
+    private $connection;
+    public function __construct()
+    {
+        $this->connection = new Database();
+    }
 
     public function fetchAllOrderCategory()
     {
@@ -20,7 +28,7 @@ class TaskService
         RIGHT JOIN category ON category.id = item_category_relations.categoryId 
         GROUP BY name 
         ORDER BY total_items DESC';
-        return $this->executeQuery($query);
+        return $this->executeQuery($this->connection->connect(), $query);
 
     }
     public function fetcthAllCategory()
@@ -31,7 +39,7 @@ class TaskService
         WHERE i.StockOrdered > 0 
         GROUP BY name 
         ORDER BY total_items DESC';
-        return $this->executeQuery($query);
+        return $this->executeQuery($this->connection->connect(), $query);
 
     }
     public function fetchAllParentCategory()
@@ -42,7 +50,7 @@ class TaskService
          LEFT JOIN item ON item_category_relations.ItemNumber = item.Number 
          GROUP BY catetory_relations.ParentcategoryId 
          ORDER BY total_item DESC';
-        return $this->executeQuery($query);
+        return $this->executeQuery($this->connection->connect(), $query);
     }
     public function fetchSingleChildCategory($parentID)
     {
@@ -56,7 +64,7 @@ class TaskService
                     ORDER BY total_item DESC";
 
 
-        return $this->executeQuery($query, [':parentID' => $parentID]);
+        return $this->executeQuery($this->connection->connect(), $query, [':parentID' => $parentID]);
     }
 
 

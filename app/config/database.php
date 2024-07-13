@@ -5,7 +5,7 @@ namespace App\Config;
 use PDO;
 use PDOException;
 
-trait Database
+class Database
 {
     private $host = 'localhost';
     private $db_name = 'ecommerce';
@@ -31,21 +31,6 @@ trait Database
 
         return $this->conn;
     }
-    private function executeQuery(string $query, array $params = [])
-    {
-        $stmt = $this->connect()->prepare($query);
 
-
-        foreach ($params as $key => &$val) {
-            $stmt->bindParam($key, $val, PDO::PARAM_INT);
-        }
-
-
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-
-        return $result;
-    }
 
 }
