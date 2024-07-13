@@ -3,20 +3,13 @@
 namespace App\Services;
 
 use App\Config\Database;
-use PDO;
+
 
 class TaskService
 {
 
 
-    private $conn;
-
-
-    public function __construct()
-    {
-        $this->conn = new Database();
-
-    }
+    use Database;
 
     public function fetchAllOrderCategory()
     {
@@ -27,11 +20,7 @@ class TaskService
         RIGHT JOIN category ON category.id = item_category_relations.categoryId 
         GROUP BY name 
         ORDER BY total_items DESC';
-        $stmt = $this->conn->connect()->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-        $stmt = null;
-        return $result;
+        return $this->executeQuery($query);
 
     }
     public function fetcthAllCategory()
@@ -42,11 +31,7 @@ class TaskService
         WHERE i.StockOrdered > 0 
         GROUP BY name 
         ORDER BY total_items DESC';
-        $stmt = $this->conn->connect()->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-        return $result;
+        return $this->executeQuery($query);
 
     }
     public function fetchAllParentCategory()
@@ -57,11 +42,7 @@ class TaskService
          LEFT JOIN item ON item_category_relations.ItemNumber = item.Number 
          GROUP BY catetory_relations.ParentcategoryId 
          ORDER BY total_item DESC';
-        $stmt = $this->conn->connect()->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-        return $result;
+        return $this->executeQuery($query);
     }
     public function fetchSingleChildCategory($parentID)
     {
@@ -74,12 +55,8 @@ class TaskService
                     GROUP BY name
                     ORDER BY total_item DESC";
 
-        $stmt = $this->conn->connect()->prepare($query);
-        $stmt->bindParam(':parentID', $parentID, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-        return $result;
+
+        return $this->executeQuery($query, [':parentID' => $parentID]);
     }
 
 
