@@ -54,17 +54,20 @@ class TaskService
     }
     public function fetchSingleChildCategory($parentID)
     {
-        $query = "SELECT category.name as name , COUNT(name) as total_item
-                    FROM category 
-                    LEFT JOIN catetory_relations ON category.id = catetory_relations.categoryId 
-                    LEFT JOIN item_category_relations ON catetory_relations.categoryId = item_category_relations.categoryId 
-                    LEFT JOIN item ON item_category_relations.ItemNumber = item.Number 
-                    WHERE catetory_relations.ParentcategoryId = :parentID
-                    GROUP BY name
-                    ORDER BY total_item DESC";
+        if ($parentID !== null) {
+            $query = "SELECT category.name as name , COUNT(name) as total_item
+            FROM category 
+            LEFT JOIN catetory_relations ON category.id = catetory_relations.categoryId 
+            LEFT JOIN item_category_relations ON catetory_relations.categoryId = item_category_relations.categoryId 
+            LEFT JOIN item ON item_category_relations.ItemNumber = item.Number 
+            WHERE catetory_relations.ParentcategoryId = :parentID
+            GROUP BY name
+            ORDER BY total_item DESC";
+            $output = $this->executeQuery($this->connection->connect(), $query, [':parentID' => $parentID]);
+            return $output;
+        }
 
 
-        return $this->executeQuery($this->connection->connect(), $query, [':parentID' => $parentID]);
     }
 
 

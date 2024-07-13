@@ -1,13 +1,5 @@
 <?php include 'inc/header.php' ?>
 
-<?php
-
-use App\Controllers\TaskController;
-
-$controller = new TaskController();
-$data = $controller->indexTask1();
-
-?>
 
 
 <div class="d-flex justify-content-evenly mt-5">

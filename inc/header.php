@@ -1,9 +1,3 @@
-<?php
-require_once 'vendor/autoload.php';
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +15,7 @@ require_once 'vendor/autoload.php';
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <div class="container d-flex justify-content-between">
             <div>
-                <a class="navbar-brand" href="index.php">Ecommerce</a>
+                <a class="navbar-brand" href="/">Ecommerce</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,10 +25,10 @@ require_once 'vendor/autoload.php';
             <ul class="navbar-nav">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="./task1.php">Task 1</a>
+                    <a class="nav-link" href="/task1">Task 1</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="task2.php">Task 2</a>
+                    <a class="nav-link" href="/task2">Task 2</a>
                 </li>
 
             </ul>

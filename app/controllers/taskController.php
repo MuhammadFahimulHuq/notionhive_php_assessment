@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Services\TaskService;
 
+
+
 class TaskController
 {
 
@@ -13,8 +15,11 @@ class TaskController
         $this->taskService = new TaskService();
 
     }
-
-    public function indexTask1(): array
+    public function index()
+    {
+        require 'views/index.php';
+    }
+    public function indexTask1()
     {
         $ordersCategories = $this->taskService->fetchAllOrderCategory();
         $allCategories = $this->taskService->fetcthAllCategory();
@@ -23,18 +28,27 @@ class TaskController
             'ordersCategories' => $ordersCategories,
             'allCategories' => $allCategories
         ];
-        return $data;
+        require 'views/task1.php';
     }
     public function indexTask2()
     {
         $allCategories = $this->taskService->fetchAllParentCategory();
 
-        return $allCategories;
+        $totalCategory = array_reduce($allCategories, fn($carry, $number) => $carry + $number['total_item']);
+
+        require 'views/task2.php';
     }
 
-    public function getChildCategoryDetails($parentID)
+    public function getChildCategoryDetails($query)
     {
+
+        $parentID = isset($query['parentID']) ? $query['parentID'] : null;
+
         $childCategories = $this->taskService->fetchSingleChildCategory($parentID);
-        return $childCategories;
+
+
+        echo json_encode($childCategories);
+
     }
+
 }

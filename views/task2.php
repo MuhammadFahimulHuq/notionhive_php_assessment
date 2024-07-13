@@ -1,20 +1,12 @@
 <?php include 'inc/header.php' ?>
 
-<?php
 
-use App\Controllers\TaskController;
-
-$controller = new TaskController();
-$allData = $controller->indexTask2();
-$totalCategory = array_reduce($allData, fn($carry, $number) => $carry + $number['total_item']);
-
-?>
 
 <div class="w-20 mt-5 mx-auto" style="cursor: pointer">
     <p id="all_categories_button" class="pe-auto">All Categories (<span
             style="font-weight:500"><?= $totalCategory ?></span>) </p>
     <ul class="px-4" id="category_list">
-        <?php foreach ($allData as $index => $data): ?>
+        <?php foreach ($allCategories as $index => $data): ?>
             <li key="<?= $index ?>" onclick="getChildCategories(<?= $data['id'] ?>,<?= $index ?>)">
                 <?= $data['name'] ?> (<span style="font-weight:500"><?= $data['total_item'] ?></span>)
             </li>
@@ -36,16 +28,17 @@ $totalCategory = array_reduce($allData, fn($carry, $number) => $carry + $number[
     function getChildCategories(parentID, index) {
         // AJAX request to fetch child categories
         if (!childContainers[index]) {
-            fetch('getChildCategory.php?parentID=' + parentID)
+            fetch('getChildCategory?parentID=' + parentID)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
+
                     return response.json();
                 })
                 .then(childCategories => {
                     // Example: Display child categories dynamically
-                    console.log(childCategories)
+
                     let childCategoryList = document.createElement('ul');
                     childCategoryList.classList.add('child-categories');
 
